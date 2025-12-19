@@ -1,6 +1,6 @@
 # 🦉 OWL
 
-**Optimized Word Listener**
+**Optimized Whisper Listener**
 
 OWL is a **self-hosted, privacy-focused audio transcription system** that converts speech into text using an open-source AI model. It is designed to run entirely within your own infrastructure on **AWS**, ensuring that **audio data never leaves your environment**.
 
