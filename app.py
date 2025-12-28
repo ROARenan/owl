@@ -14,7 +14,7 @@ def transcrever_audio(audio_file):
     audio_input, _ = librosa.load(audio_file, sr=16000)
 
     # Transcribe audio
-    result: Union[Dict[str, Any], List[Dict[str, Any]]] = pipe(audio_input, return_timestamps=True)
+    result: Union[Dict[str, Any], List[Dict[str, Any]]] = pipe(audio_input, return_timestamps=True, generate_kwargs={"language": "portuguese"})
     if isinstance(result, list):
         return result[0]["text"]
     return result["text"]
