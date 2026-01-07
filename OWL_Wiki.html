@@ -1,0 +1,292 @@
+{{transclude name="space:FinOps_PMO.templates.nav-bar-template" args="
+CURRENT_HEADER_URL=https://w.amazon.com/bin/view/FinOps_PMO/templates/nav-bar-template/|
+CURRENT_HEADER=FinOps Project Management Office(PMO)|
+CURRENT_PAGE=OWL - Audio Transcription Tool (Personal Project)
+"/}}
+
+{{html}}
+<div class="ms-container"> <!-- opening doc container -->
+{{/html}}
+
+= (% lang="EN-GB" style="font-family:~"Arial~",sans-serif; font-size:28px" %)🦉 OWL - Optimized Whisper Listener(%%) =
+
+(% style="margin-bottom:6.0pt; text-align:justify" %)
+(% style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: rgb(63, 65, 73); text-align: start; white-space: pre-wrap" %)OWL is a simple, self-hosted audio transcription tool that uses OpenAI's Whisper AI model to convert speech to text. This is a **personal project** being shared with Amazon employees who might find it useful for transcribing meetings, interviews, or audio recordings locally without sending data to external services.
+
+{{info}}
+**Note**: This is not an official Amazon project. It's a personal tool created by an Amazon employee and shared for the benefit of colleagues. It runs entirely on your local machine and requires no AWS infrastructure.
+{{/info}}
+
+= (% style="font-family:Arial,Helvetica,sans-serif; font-size:28px" %)What It Does(%%) =
+
+(% style="font-family:Arial,Helvetica,sans-serif; font-size:14px" %)
+OWL is a lightweight web application that:
+
+* Uploads audio files (WAV or MP3 format)
+* Transcribes them using the Whisper AI model
+* Displays the transcription in your browser
+* Lets you download the result as a text file
+
+**Privacy-focused**: Everything runs on your local machine. No data leaves your computer.
+
+= (% style="font-family:Arial,Helvetica,sans-serif; font-size:28px" %)Why Use OWL?(%%) =
+
+(((
+[[image:privacy-icon.png||height="35" width="35"]] (% style="font-family:Arial,Helvetica,sans-serif; font-size:14px" %)**Privacy**: All processing happens locally - no data sent to external services
+
+[[image:free-icon.png||height="35" width="35"]] (% style="font-family:Arial,Helvetica,sans-serif; font-size:14px" %)**Free**: Uses open-source Whisper model - no API costs
+
+[[image:simple-icon.png||height="35" width="35"]] (% style="font-family:Arial,Helvetica,sans-serif; font-size:14px" %)**Simple**: Easy web interface - just upload and transcribe
+
+[[image:offline-icon.png||height="35" width="35"]] (% style="font-family:Arial,Helvetica,sans-serif; font-size:14px" %)**Offline**: Works without internet connection once installed
+)))
+
+= (% style="font-family:Arial,Helvetica,sans-serif; font-size:28px" %)Getting Started(%%) =
+
+== (% style="font-family:Arial,Helvetica,sans-serif; font-size:20px" %)Prerequisites(%%) ==
+
+(% style="font-family:Arial,Helvetica,sans-serif; font-size:14px" %)
+* Python 3.10 or higher
+* (Optional) CUDA-compatible GPU for faster processing
+
+== (% style="font-family:Arial,Helvetica,sans-serif; font-size:20px" %)Installation(%%) ==
+
+(% style="font-family:Arial,Helvetica,sans-serif; font-size:14px" %)
+**1. Clone the repository**
+
+{{code language="bash"}}
+git clone https://github.com/your-org/owl.git
+cd owl
+{{/code}}
+
+**2. Create virtual environment**
+
+{{code language="bash"}}
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+{{/code}}
+
+**3. Install dependencies**
+
+{{code language="bash"}}
+pip install -r requirements.txt
+{{/code}}
+
+== (% style="font-family:Arial,Helvetica,sans-serif; font-size:20px" %)Running the Application(%%) ==
+
+(% style="font-family:Arial,Helvetica,sans-serif; font-size:14px" %)
+**Start the web interface:**
+
+{{code language="bash"}}
+streamlit run app.py
+{{/code}}
+
+The app will automatically open in your browser at {{code}}http://localhost:8501{{/code}}
+
+= (% style="font-family:Arial,Helvetica,sans-serif; font-size:28px" %)How to Use(%%) =
+
+(% style="font-family:Arial,Helvetica,sans-serif; font-size:14px" %)
+1. **Open the web interface** (launches automatically when you run the app)
+1. **Click "Browse files"** to upload an audio file (WAV or MP3)
+1. **Wait** while Whisper transcribes your audio (you'll see a spinner)
+1. **Read the transcription** displayed on the screen
+1. **Click "Download transcription as .txt"** to save the result
+
+[[image:owl-screenshot.png||height="300" width="600"]]
+
+= (% style="font-family:Arial,Helvetica,sans-serif; font-size:28px" %)Features(%%) =
+
+(% style="font-family:Arial,Helvetica,sans-serif; font-size:14px" %)
+|=Feature|=Status|=Notes
+|Web interface|✅ Working|Streamlit-based, simple and clean
+|Audio upload|✅ Working|WAV and MP3 formats supported
+|Whisper transcription|✅ Working|Using whisper-tiny model (fast, good accuracy)
+|Portuguese language|✅ Working|Currently configured for Portuguese
+|Text download|✅ Working|Saves transcription as .txt file
+|GPU acceleration|✅ Working|Auto-detects CUDA if available
+|Local processing|✅ Working|No external API calls or data transmission
+
+= (% style="font-family:Arial,Helvetica,sans-serif; font-size:28px" %)Technical Details(%%) =
+
+== (% style="font-family:Arial,Helvetica,sans-serif; font-size:20px" %)Technology Stack(%%) ==
+
+(% style="font-family:Arial,Helvetica,sans-serif; font-size:14px" %)
+|=Component|=Technology|=Purpose
+|Web Framework|Streamlit|Simple web interface
+|AI Model|Whisper-tiny (OpenAI)|Speech-to-text conversion
+|Model Library|Hugging Face Transformers|Model loading and inference
+|Deep Learning|PyTorch|Model execution
+|Audio Processing|librosa|Audio file loading and processing
+
+== (% style="font-family:Arial,Helvetica,sans-serif; font-size:20px" %)Model Information(%%) ==
+
+(% style="font-family:Arial,Helvetica,sans-serif; font-size:14px" %)
+**Current Model**: Whisper-tiny
+
+|=Model|=Speed|=Accuracy|=Memory Required
+|whisper-tiny|⚡ Fast|👍 Good|~1 GB
+|whisper-base|⚡ Medium|👍👍 Better|~1.5 GB
+|whisper-small|🐌 Slow|👍👍👍 Great|~2.5 GB
+
+**Note**: You can change the model by editing {{code}}app.py{{/code}}. Larger models are more accurate but slower.
+
+== (% style="font-family:Arial,Helvetica,sans-serif; font-size:20px" %)Performance(%%) ==
+
+(% style="font-family:Arial,Helvetica,sans-serif; font-size:14px" %)
+* **With GPU**: ~1-2 minutes for a 30-minute audio file
+* **With CPU**: ~10-15 minutes for a 30-minute audio file
+* **Memory**: ~1-2 GB RAM during transcription
+
+= (% style="font-family:Arial,Helvetica,sans-serif; font-size:28px" %)Configuration(%%) =
+
+== (% style="font-family:Arial,Helvetica,sans-serif; font-size:20px" %)Change Language(%%) ==
+
+(% style="font-family:Arial,Helvetica,sans-serif; font-size:14px" %)
+Edit {{code}}app.py{{/code}}, line 14:
+
+{{code language="python"}}
+# Change "portuguese" to "english", "spanish", "french", etc.
+result = pipe(audio_input, return_timestamps=True, 
+              generate_kwargs={"language": "portuguese"})
+{{/code}}
+
+== (% style="font-family:Arial,Helvetica,sans-serif; font-size:20px" %)Use Different Whisper Model(%%) ==
+
+(% style="font-family:Arial,Helvetica,sans-serif; font-size:14px" %)
+Edit {{code}}app.py{{/code}}, line 10:
+
+{{code language="python"}}
+# Options: whisper-tiny, whisper-base, whisper-small, whisper-medium, whisper-large
+pipe = pipeline("automatic-speech-recognition", 
+                model="openai/whisper-base", device=device)
+{{/code}}
+
+== (% style="font-family:Arial,Helvetica,sans-serif; font-size:20px" %)Force CPU Mode(%%) ==
+
+(% style="font-family:Arial,Helvetica,sans-serif; font-size:14px" %)
+If you encounter GPU memory issues, edit {{code}}app.py{{/code}}, line 9:
+
+{{code language="python"}}
+device = -1  # Force CPU mode
+{{/code}}
+
+= (% style="font-family:Arial,Helvetica,sans-serif; font-size:28px" %)Privacy & Security(%%) =
+
+(% style="font-family:Arial,Helvetica,sans-serif; font-size:14px" %)
+* ✅ **100% local processing** - No external API calls
+* ✅ **No data collection** - Nothing is sent anywhere
+* ✅ **Open source model** - Whisper is publicly available
+* ✅ **Self-hosted** - You control everything
+
+{{warning}}
+**Important**: This is a personal tool designed for individual use. It does **not** include enterprise security features like:
+* User authentication
+* Audit logging
+* Data encryption
+* Access controls
+
+For production use in enterprise environments, additional security measures would be needed.
+{{/warning}}
+
+= (% style="font-family:Arial,Helvetica,sans-serif; font-size:28px" %)Troubleshooting(%%) =
+
+== (% style="font-family:Arial,Helvetica,sans-serif; font-size:20px" %)Common Issues(%%) ==
+
+(% style="font-family:Arial,Helvetica,sans-serif; font-size:14px" %)
+|=Problem|=Solution
+|"CUDA out of memory"|Use a smaller model (whisper-tiny) or force CPU mode
+|"File format not supported"|Only WAV and MP3 are supported. Convert using ffmpeg
+|Slow transcription|Use GPU if available, or switch to whisper-tiny model
+|Model download fails|Check internet connection (needed for first run only)
+|Port 8501 already in use|Close other Streamlit apps or use {{code}}streamlit run app.py ~-~-server.port 8502{{/code}}
+
+== (% style="font-family:Arial,Helvetica,sans-serif; font-size:20px" %)Converting Audio Formats(%%) ==
+
+(% style="font-family:Arial,Helvetica,sans-serif; font-size:14px" %)
+If you have audio in other formats (M4A, OGG, FLAC), convert to MP3 using ffmpeg:
+
+{{code language="bash"}}
+ffmpeg -i input.m4a output.mp3
+{{/code}}
+
+= (% style="font-family:Arial,Helvetica,sans-serif; font-size:28px" %)Use Cases(%%) =
+
+(% style="font-family:Arial,Helvetica,sans-serif; font-size:14px" %)
+**Good for**:
+* Transcribing meeting recordings
+* Converting interview audio to text
+* Personal note-taking from voice memos
+* Transcribing lectures or presentations
+* Any audio transcription where privacy is important
+
+**Not suitable for**:
+* Real-time transcription (it's batch processing)
+* Very long audio files (>2 hours may be slow)
+* Production enterprise use (lacks security features)
+* High-volume processing (processes one file at a time)
+
+= (% style="font-family:Arial,Helvetica,sans-serif; font-size:28px" %)Future Ideas(%%) =
+
+(% style="font-family:Arial,Helvetica,sans-serif; font-size:14px" %)
+Potential enhancements (not currently implemented):
+
+* Support more audio formats (M4A, OGG, FLAC)
+* Multi-language auto-detection
+* Batch processing (multiple files at once)
+* Speaker diarization (identify who said what)
+* Timestamps in output
+* Docker container for easier deployment
+* AWS deployment option for teams
+
+= (% style="font-family:Arial,Helvetica,sans-serif; font-size:28px" %)Contributing(%%) =
+
+(% style="font-family:Arial,Helvetica,sans-serif; font-size:14px" %)
+This is a personal project, but contributions are welcome!
+
+**Ideas for contributions**:
+* Add support for more audio formats
+* Improve the UI/UX
+* Add language auto-detection
+* Create Docker container
+* Add automated tests
+
+= (% style="font-family:Arial,Helvetica,sans-serif; font-size:28px" %)Resources(%%) =
+
+(% style="font-family:Arial,Helvetica,sans-serif; font-size:14px" %)
+* [[GitHub Repository>>https://github.com/your-org/owl]]
+* [[Whisper Model Documentation>>https://github.com/openai/whisper]]
+* [[Streamlit Documentation>>https://docs.streamlit.io]]
+* [[Hugging Face Transformers>>https://huggingface.co/docs/transformers]]
+
+= (% style="font-family:Arial,Helvetica,sans-serif; font-size:28px" %)Contact & Support(%%) =
+
+(% style="font-family:Arial,Helvetica,sans-serif; font-size:14px" %)
+**Project Creator**: [Your Name] ([your-email]@amazon.com)
+
+**Questions or Issues?**
+* Open an issue on GitHub
+* Reach out via email
+* Ask in [relevant Slack channel]
+
+{{info}}
+**Disclaimer**: This is a personal project shared for the benefit of Amazon employees. It is not officially supported by Amazon and does not come with any warranty or SLA. Use at your own discretion.
+{{/info}}
+
+= (% style="font-family:Arial,Helvetica,sans-serif; font-size:28px" %)Acknowledgments(%%) =
+
+(% style="font-family:Arial,Helvetica,sans-serif; font-size:14px" %)
+* **OpenAI** for creating the Whisper model
+* **Hugging Face** for the Transformers library
+* **Streamlit** for the easy-to-use web framework
+* **The open-source community** for making tools like this possible
+
+---
+
+(% style="font-family:Arial,Helvetica,sans-serif; font-size:12px; font-style:italic" %)
+**Last Updated**: January 7, 2026
+**Version**: 0.1.0
+**License**: MIT License
+
+{{html}}
+</div> <!-- closing doc container -->
+{{/html}}
