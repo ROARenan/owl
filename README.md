@@ -1,154 +1,230 @@
-# 🦉 OWL
+# 🦉 OWL - Optimized Whisper Listener
 
-**Optimized Whisper Listener**
-
-OWL is a **self-hosted, privacy-focused audio transcription system** that converts speech into text using an open-source AI model. It is designed to run entirely within your own infrastructure on **AWS**, ensuring that **audio data never leaves your environment**.
-
-The project provides a **minimal web interface** for uploading audio files and receiving accurate transcriptions, making it suitable for internal tools, privacy-sensitive environments, and personal use.
+A simple, self-hosted audio transcription tool using OpenAI's Whisper model. Perfect for transcribing meetings, interviews, and audio recordings locally without sending data to external services.
 
 ---
 
-## ✨ Features
+## ✨ What It Does
 
-* 🔐 **Fully self-hosted** – no third-party APIs or external services
-* 🧠 **Open-source speech-to-text model** (e.g. Whisper)
-* 🦉 **Simple and lightweight UI**
-* ⚡ **Fast and accurate transcription**
-* ☁️ **AWS-ready architecture**
-* 🧩 **Container-friendly (Docker)**
-* 🛡️ **Privacy by design** (optional automatic file deletion)
+OWL is a **lightweight Streamlit web application** that:
+- Uploads audio files (WAV or MP3)
+- Transcribes them using the Whisper AI model
+- Displays the transcription in your browser
+- Lets you download the result as a text file
 
----
-
-## 🏗️ Architecture Overview
-
-```
-User
-  ↓
-Web Interface (HTML / JS)
-  ↓
-Backend API (FastAPI)
-  ↓
-Speech-to-Text Engine (Whisper)
-```
-
-All components are deployed inside AWS and can run on a single EC2 instance or be scaled using containers.
+**Privacy-focused**: Everything runs on your local machine. No data leaves your computer.
 
 ---
 
-## 🧠 Transcription Engine
-
-OWL uses an **open-source speech recognition model** deployed locally, such as:
-
-* Whisper (OpenAI – open source)
-* faster-whisper (recommended for performance)
-
-The model runs entirely on your infrastructure and supports multiple languages, including **English and Portuguese (PT-BR)**.
-
----
-
-## 🖥️ User Interface
-
-The interface is intentionally minimal:
-
-* Audio file upload
-* “Transcribe” button
-* Text output area
-
-This keeps the system fast, accessible, and easy to maintain.
-
----
-
-## 🚀 Getting Started
+## 🚀 Quick Start
 
 ### Prerequisites
 
-* AWS account
-* EC2 instance (CPU or GPU)
-* Docker & Docker Compose
-* Python 3.10+
+- Python 3.10+
+- (Optional) CUDA-compatible GPU for faster processing
 
----
+### Installation
 
-### Installation (Docker)
-
+1. **Clone the repository**
 ```bash
 git clone https://github.com/your-org/owl.git
 cd owl
-docker compose up -d
 ```
 
-The application will be available at:
+2. **Create virtual environment**
+```bash
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+```
 
+3. **Install dependencies**
+```bash
+pip install -r requirements.txt
 ```
-http://localhost:8000
+
+### Running the Application
+
+**Web Interface** (Recommended):
+```bash
+streamlit run app.py
 ```
+
+The app will open in your browser at `http://localhost:8501`
+
+**Command Line** (for testing):
+```bash
+python main.py
+```
+(Edit `main.py` to point to your audio file)
+
+---
+
+## 📖 How to Use
+
+1. **Open the web interface** (it launches automatically)
+2. **Click "Browse files"** to upload an audio file (WAV or MP3)
+3. **Wait** while Whisper transcribes (shows a spinner)
+4. **Read the transcription** displayed on screen
+5. **Click "Download transcription as .txt"** to save the result
+
+---
+
+## 🎯 Current Features
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| Web interface | ✅ Working | Streamlit-based |
+| Audio upload | ✅ Working | WAV and MP3 only |
+| Whisper transcription | ✅ Working | Using whisper-tiny model |
+| Portuguese language | ✅ Working | Hardcoded in `app.py` |
+| Text download | ✅ Working | Saves as .txt file |
+| GPU acceleration | ✅ Working | Auto-detects CUDA |
+| Local processing | ✅ Working | No external API calls |
+
+---
+
+## 🧠 Technical Details
+
+### Model
+- **Whisper-tiny** from OpenAI (open source)
+- Loaded via Hugging Face Transformers
+- Runs locally on CPU or GPU
+- Currently configured for Portuguese language
+
+### Audio Processing
+- Uses `librosa` to load audio files
+- Resamples to 16kHz (Whisper requirement)
+- Supports WAV and MP3 formats
+
+### Dependencies
+Key packages:
+- `streamlit` - Web interface
+- `transformers` - Whisper model
+- `torch` - PyTorch for model inference
+- `librosa` - Audio file processing
+
+See `requirements.txt` for complete list.
 
 ---
 
 ## ⚙️ Configuration
 
-Environment variables (example):
+### Change Language
 
-```env
-MODEL_SIZE=base
-LANGUAGE=auto
-DELETE_AUDIO_AFTER_PROCESSING=true
+Edit `app.py`, line 14:
+```python
+# Change "portuguese" to "english", "spanish", etc.
+result = pipe(audio_input, return_timestamps=True, generate_kwargs={"language": "portuguese"})
 ```
 
----
+### Use Different Whisper Model
 
-## 🔒 Security & Privacy
+Edit `app.py`, line 10:
+```python
+# Options: whisper-tiny, whisper-base, whisper-small, whisper-medium, whisper-large
+pipe = pipeline("automatic-speech-recognition", model="openai/whisper-base", device=device)
+```
 
-OWL is designed for privacy-sensitive use cases:
-
-* Audio files can be processed **in memory only**
-* Optional automatic deletion after transcription
-* Encrypted storage (EBS)
-* IAM-based access control
-* HTTPS support
-
-No data is shared with external providers.
+**Note**: Larger models are more accurate but slower and require more memory.
 
 ---
 
-## 📈 Scaling
+## 📊 Performance
 
-OWL can scale from a single-user tool to an internal enterprise service:
+| Model | Speed | Accuracy | Memory |
+|-------|-------|----------|--------|
+| whisper-tiny | Fast | Good | ~1 GB |
+| whisper-base | Medium | Better | ~1.5 GB |
+| whisper-small | Slow | Great | ~2.5 GB |
 
-* EC2 (single instance)
-* ECS / Docker Swarm
-* GPU acceleration (g4dn instances)
-* Load balancer + autoscaling
+**Current**: Using `whisper-tiny` for speed.
 
 ---
 
-## 🎯 Use Cases
+## 🔒 Privacy & Security
 
-* Internal company transcription tools
-* Legal, medical, or research environments
-* Meeting and interview transcription
-* Privacy-first AI applications
+- ✅ **100% local processing** - No external API calls
+- ✅ **No data collection** - Nothing is sent anywhere
+- ✅ **Open source model** - Whisper is publicly available
+- ✅ **Self-hosted** - You control everything
+
+**Note**: This is a personal tool. For production use in enterprise environments, additional security measures would be needed (authentication, encryption, audit logging, etc.).
+
+---
+
+## 🛠️ Troubleshooting
+
+### "CUDA out of memory"
+- Use a smaller model (whisper-tiny)
+- Or force CPU mode by editing `app.py`:
+```python
+device = -1  # Force CPU
+```
+
+### "File format not supported"
+- Only WAV and MP3 are currently supported
+- Convert your audio file using ffmpeg:
+```bash
+ffmpeg -i input.m4a output.mp3
+```
+
+### Slow transcription
+- Use GPU if available (10x faster)
+- Or use a smaller model (whisper-tiny)
 
 ---
 
 ## 🛣️ Roadmap
 
-* [ ] Authentication and user management
-* [ ] Batch audio processing
-* [ ] Speaker diarization
-* [ ] Real-time streaming transcription
-* [ ] Webhook and API integrations
+### Current Version (v0.1)
+- [x] Basic Streamlit interface
+- [x] Whisper model integration
+- [x] Portuguese language support
+- [x] WAV/MP3 file upload
+- [x] Text download
+
+### Future Ideas
+- [ ] Support more audio formats (M4A, OGG, FLAC)
+- [ ] Multi-language auto-detection
+- [ ] Batch processing (multiple files)
+- [ ] Speaker diarization (who said what)
+- [ ] Timestamps in output
+- [ ] Docker container for easy deployment
+- [ ] AWS deployment option (for teams)
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome!
-Please open an issue or submit a pull request.
+This is a personal project, but contributions are welcome!
+
+**Ideas for contributions**:
+- Add support for more audio formats
+- Improve the UI/UX
+- Add language auto-detection
+- Create Docker container
+- Add tests
 
 ---
 
 ## 📄 License
 
-This project is released under the **MIT License**.
+This project is released under the **MIT License** - feel free to use it however you want!
+
+---
+
+## 🙏 Acknowledgments
+
+- **OpenAI** for the Whisper model
+- **Hugging Face** for the Transformers library
+- **Streamlit** for the easy web framework
+
+---
+
+## 📧 Contact
+
+Questions or suggestions? Feel free to open an issue or reach out!
+
+---
+
+**Note**: This is a personal tool I created for my own use and am sharing with Amazon employees who might find it helpful. It's not an official Amazon project and doesn't have enterprise features like SSO, audit logging, or AWS integration. For production use, additional development would be needed.
