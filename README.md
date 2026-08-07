@@ -7,7 +7,9 @@ A simple, self-hosted audio transcription tool using OpenAI's Whisper model. Per
 ## ✨ What It Does
 
 OWL is a **lightweight Streamlit web application** that:
-- Uploads audio files (WAV or MP3)
+
+- Uploads audio files (WAV or MP3) or video files (MP4)
+- Extracts the audio track from video files automatically
 - Transcribes them using the Whisper AI model
 - Displays the transcription in your browser
 - Lets you download the result as a text file
@@ -62,8 +64,8 @@ python main.py
 ## 📖 How to Use
 
 1. **Open the web interface** (it launches automatically)
-2. **Click "Browse files"** to upload an audio file (WAV or MP3)
-3. **Wait** while Whisper transcribes (shows a spinner)
+2. **Click "Browse files"** to upload an audio file (WAV or MP3) or a video file (MP4)
+3. **Wait** while OWL extracts the audio (video files only) and Whisper transcribes it (shows a spinner)
 4. **Read the transcription** displayed on screen
 5. **Click "Download transcription as .txt"** to save the result
 
@@ -74,7 +76,8 @@ python main.py
 | Feature | Status | Notes |
 |---------|--------|-------|
 | Web interface | ✅ Working | Streamlit-based |
-| Audio upload | ✅ Working | WAV and MP3 only |
+| Audio upload | ✅ Working | WAV and MP3 |
+| Video upload | ✅ Working | MP4 (audio track is extracted automatically) |
 | Whisper transcription | ✅ Working | Using whisper-tiny model |
 | Portuguese language | ✅ Working | Hardcoded in `app.py` |
 | Text download | ✅ Working | Saves as .txt file |
@@ -95,6 +98,7 @@ python main.py
 - Uses `librosa` to load audio files
 - Resamples to 16kHz (Whisper requirement)
 - Supports WAV and MP3 formats
+- For MP4 video uploads, `moviepy` extracts the audio track to a temporary WAV file before transcription
 
 ### Dependencies
 Key packages:
@@ -162,7 +166,7 @@ device = -1  # Force CPU
 ```
 
 ### "File format not supported"
-- Only WAV and MP3 are currently supported
+- Only WAV, MP3, and MP4 are currently supported
 - Convert your audio file using ffmpeg:
 ```bash
 ffmpeg -i input.m4a output.mp3
@@ -181,6 +185,7 @@ ffmpeg -i input.m4a output.mp3
 - [x] Whisper model integration
 - [x] Portuguese language support
 - [x] WAV/MP3 file upload
+- [x] MP4 video upload (audio auto-extracted)
 - [x] Text download
 
 ### Future Ideas
